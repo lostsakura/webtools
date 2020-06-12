@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>demo</title>
+  <script src="common/jquery-3.5.1.min.js"></script>
+
+  <link rel="stylesheet" href="pcd3/css/pcd3.css"/>
+
+  <script src="pcd3/js/pcd3.js"></script>
+</head>
+
+<body>
+<div>
+
+  <label for="testPCD3Input">PCD3 测试 - 初始化</label>
+  <input type="text" id="testPCD3Input">
+  <span class="ls_pcd_tool" id="testPCD3Span"></span>
+
+
+  <label for="testPCD3Input2">PCD3 测试 - 反显</label>
+  <input type="text" id="testPCD3Input2" value="山东省/济南市/历下区">
+  <span class="ls_pcd_tool" id="testPCD3Span2"></span>
+
+</div>
+</body>
+
+<script type="text/javascript">
+
+    createPCD3("testPCD3Span", "testPCD3Input");
+
+    createPCD3("testPCD3Span2", "testPCD3Input2");
+
+</script>
+</html>
