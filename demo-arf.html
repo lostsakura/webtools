@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ARF</title>
+
+  <script src="common/jquery/jquery-3.5.1.min.js"></script>
+
+  <style>
+    * {
+      /*border: 1px solid black;*/
+    }
+
+    body {
+      /*background-color: antiquewhite;*/
+    }
+
+    .ls_arf_window {
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .ls_arf_header {
+      height: 30px;
+      line-height: 30px;
+      font-size: 14px;
+      padding: 0 10px 0 5px;
+      background-color: #95B8E7;
+    }
+
+    .ls_arf_header > span {
+      height: 24px;
+      margin: 3px 0;
+      line-height: 24px;
+    }
+
+    .ls_arf_h_title {
+      display: inline-block;
+      float: left;
+    }
+
+    .ls_arf_h_addBtn {
+      display: inline-block;
+      float: right;
+      cursor: pointer;
+      margin-right: 5px;
+      background-color: #555555;
+      color: #ffffff;
+      width: 80px;
+      text-align: center;
+      border-radius: 10px;
+    }
+
+    .ls_arf_body {
+      margin: 5px 12px;
+    }
+
+    .ls_arf_b_item {
+      margin: 5px 0;
+    }
+
+    .ls_arf_b_i_header {
+      height: 30px;
+      background-color: #95B8E7;
+      line-height: 30px;
+    }
+
+    .ls_arf_b_i_header > span {
+      display: inline-block;
+      height: 26px;
+      line-height: 26px;
+      text-align: center;
+      margin: 2px 4px;
+      font-size: 14px;
+    }
+
+    .ls_arf_b_i_h_no {
+      float: left;
+      width: 40px;
+      line-height: 30px;
+    }
+
+    .ls_arf_b_i_h_submit {
+      float: right;
+      cursor: pointer;
+      width: 50px;
+      background-color: #4CAF50;
+      border-radius: 10px;
+      color: #ffffff;
+    }
+
+    .ls_arf_b_i_h_delete {
+      float: right;
+      cursor: pointer;
+      width: 50px;
+      background-color: #f44336;
+      border-radius: 10px;
+      color: #ffffff;
+    }
+
+    .ls_arf_b_i_body > iframe {
+      width: 100%;
+    }
+  </style>
+
+</head>
+<body>
+
+<!--<p>Additional record form | 附加记录表单</p>-->
+
+<!--<div class="ls_arf_window">-->
+<!--  <div class="ls_arf_header">-->
+<!--    <span class="ls_arf_h_title">客户常用地址</span>-->
+<!--    <span class="ls_arf_h_addBtn">增加记录</span>-->
+<!--  </div>-->
+<!--  <div class="ls_arf_body">-->
+<!--    <div class="ls_arf_b_item">-->
+<!--      <div class="ls_arf_b_i_header">-->
+<!--        <span class="ls_arf_b_i_h_no">1</span>-->
+<!--        <span class="ls_arf_b_i_h_delete">删除</span>-->
+<!--        <span class="ls_arf_b_i_h_submit">保存</span>-->
+<!--      </div>-->
+<!--      <div class="ls_arf_b_i_body">-->
+<!--        <iframe src="" frameborder="0"></iframe>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<div id="arf_test" class="ls_arf_window">
+</div>
+
+<script>
+
+    function createARF(config) {
+        let c = config
+        let number = 0
+        let nodeList = []
+        let ls_arf_body
+        let ls_arf_h_addBtn
+
+        function init() {
+            let ls_arf_window = $("#arf_test")
+            let ls_arf_header = $("<div class='ls_arf_header'></div>")
+            let ls_arf_h_title = $("<span class='ls_arf_h_title'>" + c['title'] +"</span>")
+            ls_arf_h_addBtn = $("<span class='ls_arf_h_addBtn'>增加记录</span>")
+            ls_arf_body = $("<div class='ls_arf_body'></div>")
+            ls_arf_header.append(ls_arf_h_title)
+            ls_arf_header.append(ls_arf_h_addBtn)
+            ls_arf_window.append(ls_arf_header)
+            ls_arf_window.append(ls_arf_body)
+        }
+
+        /**
+         * 预加载
+         */
+        function preload(data) {
+
+        }
+
+        function deleteNode(node) {
+            node.remove()
+            let index = nodeList.indexOf(node)
+            nodeList.splice(index, 1)
+            console.log(nodeList.length)
+        }
+
+        function submitNode(node) {
+            node.submit()
+        }
+
+        function check() {
+            if (nodeList.length  >= c['max']) {
+                console.log("以达到最大值！")
+                return false
+            }
+            return true
+        }
+
+
+        /**
+         * 加载节点
+         * @param iframeURL
+         */
+        function loadItem(iframeURL, fromDB, id) {
+            if (!check()) return false
+            let ls_arf_b_item = $("<div class='ls_arf_b_item'>")
+            let ls_arf_b_i_header = $("<div class='ls_arf_b_i_header'>")
+            let ls_arf_b_i_h_delete = $("<span class='ls_arf_b_i_h_delete'>删除</span>")
+            let ls_arf_b_i_h_submit = $("<span class='ls_arf_b_i_h_submit'>保存</span>")
+            let ls_arf_b_i_body = $("<div class='ls_arf_b_i_body'>")
+            let ls_arf_b_i_body_iframe = $("<iframe src='" + iframeURL +"' frameborder='0'></iframe>")
+            ls_arf_b_i_header.append(ls_arf_b_i_h_delete)
+            ls_arf_b_i_header.append(ls_arf_b_i_h_submit)
+            ls_arf_b_i_body.append(ls_arf_b_i_body_iframe)
+            ls_arf_b_item.append(ls_arf_b_i_header)
+            ls_arf_b_item.append(ls_arf_b_i_body)
+            ls_arf_body.append(ls_arf_b_item)
+            nodeList.push(ls_arf_b_item)
+            // 监听删除按钮
+            ls_arf_b_i_h_delete.click(() => {
+                if (fromDB) {
+
+                }
+                deleteNode(ls_arf_b_item)
+            })
+            // 监听提交按钮
+            ls_arf_b_i_h_submit.click(() => {
+                submitNode(ls_arf_b_i_body_iframe)
+            })
+        }
+        init()
+
+
+
+        ls_arf_h_addBtn.click(() => {
+            loadItem("http://www.baidu.com")
+        })
+
+    }
+
+
+    $(() => {
+        createARF({
+            loadUrl:"",
+            addUrl: "URLTEST",
+            deleteUrl: "",
+            updateUrl: "",
+            title: "测试title",
+            divId: "arf_test",
+            max: 3
+        })
+    })
+
+</script>
+</body>
+</html>
